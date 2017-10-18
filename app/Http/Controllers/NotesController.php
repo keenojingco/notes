@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Notes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,7 @@ class NotesController extends Controller
      */
     public function index()
     {
-        //
+        return Notes::with('user')->orderBy('created_at','desc')->get();
     }
 
     /**
@@ -35,7 +40,21 @@ class NotesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title'     => 'required|max:255',
+            'note'      => 'required',
+        ]);
+
+        $note = Notes::create([
+            'title'     => request('title'),
+            'note'      => request('note'),
+            'user_id'   => Auth::user()->id
+        ]);
+
+        return response()->json([
+            'note'      => $note,
+            'message'   => 'Success'
+        ], 200);
     }
 
     /**

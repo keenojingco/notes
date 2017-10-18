@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notes extends Model
 {
-    protected $fillable = ['user_id', 'title', 'note'];
+	protected $guarded = [];
 
-    public function __construct()
+	public function user()
     {
-        $this->middleware('auth');
+        return $this->belongsTo('App\User');
     }
 }
