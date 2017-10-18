@@ -14,10 +14,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Enrique Jingco</td>
-                                <td>My first note</td>
-                                <td>18-Oct-2017</td>
+                            <tr v-for="note in notes">
+                                <td>{{ note.user.name }}</td>
+                                <td>{{ note.title }}</td>
+                                <td>{{ note.created_at }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -29,8 +29,15 @@
 
 <script>
     export default {
+        data() {
+            return {
+                notes: []
+            }
+        },
         mounted() {
-
+            axios.get('/note').then(response => {
+                this.notes = response.data;
+            });
         }
     }
 </script>
