@@ -16,7 +16,8 @@ window.Vue = require('vue');
  */
 
 Vue.component('example', require('./components/Example.vue'));
-Vue.component('note', require('./components/Note.vue'));
+Vue.component('notes', require('./components/Notes.vue'));
+Vue.component('create-note', require('./components/CreateNote.vue'));
 
 const app = new Vue({
     el: '#app'
