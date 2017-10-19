@@ -9,16 +9,18 @@
                 <label>Note</label>
                 <textarea class="form-control" v-model="note.note"></textarea>
             </div>
-            <button type="submit" class="btn btn-default pull-left">Cancel</button>
+            <button type="submit" class="btn btn-default pull-left" @click="toggleShowList">Cancel</button>
             <button type="submit" class="btn btn-success pull-right" @click="createNote">Add Note</button>
         </div>
     </div>
 </template>
 
 <script>
+    import Store from '../store';
     export default {
         data() {
             return {
+                shared: Store,
                 note: {
                     title : '',
                     note: ''
@@ -35,7 +37,7 @@
                 }).then(response => {
                     this.note.title = '';
                     this.note.note = '';
-                    notes.push(response.data);
+                    this.getNotes();
                 });
             }
         }

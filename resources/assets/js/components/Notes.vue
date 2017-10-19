@@ -14,13 +14,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="note in notes">
+                            <tr v-for="note in shared.notes">
                                 <td>{{ note.user.name }}</td>
                                 <td>{{ note.title }}</td>
                                 <td>{{ note.created_at }}</td>
                             </tr>
                         </tbody>
                     </table>
+                    <button class="btn btn-success" @click="toggleShowList">CREATE A NEW NOTE</button>
                 </div>
             </div>
         </div>
@@ -28,16 +29,25 @@
 </template>
 
 <script>
+    import Store from '../store';
     export default {
         data() {
             return {
-                notes: []
+                shared: Store
             }
         },
         mounted() {
-            axios.get('/note').then(response => {
-                this.notes = response.data;
-            });
+            this.getNotes();
+        },
+        methods: {
+            getNotes() {
+                axios.get('/note').then(response => {
+                    this.shared.notes = response.data;
+                });
+            },
+            toggleShowList(){
+                this.shared.showList = !this.shared.showList
+            }
         }
     }
 </script>
