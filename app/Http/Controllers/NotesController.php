@@ -63,9 +63,9 @@ class NotesController extends Controller
      * @param  \App\Notes  $notes
      * @return \Illuminate\Http\Response
      */
-    public function show(Notes $notes)
+    public function show($note)
     {
-        //
+        return Notes::where('id', $note)->with('user')->orderBy('created_at','desc')->first();
     }
 
     /**

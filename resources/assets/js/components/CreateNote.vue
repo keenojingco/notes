@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <div>
+            <h2>New Note</h2>
             <div class="form-group">
                 <label>Title</label>
                 <input type="text" class="form-control" v-model="note.title">
@@ -9,23 +10,20 @@
                 <label>Note</label>
                 <textarea class="form-control" v-model="note.note"></textarea>
             </div>
-            <button type="submit" class="btn btn-default pull-left" @click="toggleShowList">Cancel</button>
+            <button type="submit" class="btn btn-default pull-left" @click="backToNotes">Cancel</button>
             <button type="submit" class="btn btn-success pull-right" @click="createNote">Add Note</button>
         </div>
     </div>
 </template>
 
 <script>
-    import Store from '../store';
     export default {
         data() {
             return {
-                shared: Store,
                 note: {
-                    title : '',
+                    title: '',
                     note: ''
                 },
-                errors: []
             }
         },
 
@@ -37,8 +35,13 @@
                 }).then(response => {
                     this.note.title = '';
                     this.note.note = '';
-                    this.getNotes();
+                    this.backToNotes();
                 });
+            },
+
+            backToNotes()
+            {
+                this.$emit('shownotes');
             }
         }
     }
