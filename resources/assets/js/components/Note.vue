@@ -13,7 +13,7 @@
             <div class="panel panel-primary" v-for="comment in comments.comments">
                 <div class="panel-heading">
                     <h3 class="panel-title pull-left">{{ comment.user.name }}</h3>
-                    <span class="pull-right">{{ postedOn(comment.created_at) }}</span>
+                    <span class="pull-right">{{ timestamp.postedOn(comment.created_at) }}</span>
                 </div>
                 <div class="panel-body">{{ comment.comment }}</div>
             </div>
@@ -28,7 +28,8 @@
         data() {
             return {
                 showAdditionalNote: false,
-                comments: {}
+                comments: {},
+                timestamp: new timestamp()
             }
         },
 
@@ -56,11 +57,6 @@
             toggleShowAdditionalNote()
             {
                 this.showAdditionalNote = !this.showAdditionalNote;
-            },
-
-            postedOn(timestamp)
-            {
-                return moment(timestamp).subtract(timestamp, 'days').calendar();
             }
         }
     }

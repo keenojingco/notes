@@ -1081,21 +1081,30 @@ module.exports = __webpack_require__(44);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__errors__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__timestamp__ = __webpack_require__(199);
 __webpack_require__(12);
 
-window.Vue = __webpack_require__(32);
 
 
-window.moment = __WEBPACK_IMPORTED_MODULE_0_moment___default.a;
 
-Vue.component('note', __webpack_require__(61));
-Vue.component('notes', __webpack_require__(38));
-Vue.component('create-note', __webpack_require__(41));
-Vue.component('additional-note', __webpack_require__(64));
 
-var app = new Vue({
+
+window.vue = __WEBPACK_IMPORTED_MODULE_0_vue___default.a;
+window.moment = __WEBPACK_IMPORTED_MODULE_1_moment___default.a;
+window.errors = __WEBPACK_IMPORTED_MODULE_2__errors__["a" /* default */];
+window.timestamp = __WEBPACK_IMPORTED_MODULE_3__timestamp__["a" /* default */];
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('note', __webpack_require__(61));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('notes', __webpack_require__(38));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('create-note', __webpack_require__(41));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('additional-note', __webpack_require__(64));
+
+var app = new vue({
     el: '#app',
     data: {
         note: {}
@@ -12934,7 +12943,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             notes: [],
-            showCreateNote: false
+            showCreateNote: false,
+            timestamp: new timestamp()
         };
     },
     mounted: function mounted() {
@@ -12969,9 +12979,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // Emitter for when a note is selected for viewing
         getNote: function getNote(note) {
             this.$emit('shownote', note);
-        },
-        postedOn: function postedOn(timestamp) {
-            return moment(timestamp).subtract(timestamp, 'days').calendar();
         }
     }
 });
@@ -13017,7 +13024,9 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(_vm.postedOn(note.created_at)))])
+                      _c("td", [
+                        _vm._v(_vm._s(_vm.timestamp.postedOn(note.created_at)))
+                      ])
                     ])
                   })
                 )
@@ -13077,6 +13086,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(197)
+}
 var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(42)
@@ -13085,7 +13098,7 @@ var __vue_template__ = __webpack_require__(43)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -13144,6 +13157,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -13151,7 +13166,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             note: {
                 title: '',
                 note: ''
-            }
+            },
+            errors: new errors()
         };
     },
 
@@ -13167,6 +13183,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.note.title = '';
                 _this.note.note = '';
                 _this.$emit('noteCreated');
+            }).catch(function (error) {
+                _this.errors.record(error.response.data);
             });
         },
         backToNotes: function backToNotes() {
@@ -13210,6 +13228,11 @@ var render = function() {
               _vm.$set(_vm.note, "title", $event.target.value)
             }
           }
+        }),
+        _vm._v(" "),
+        _c("span", {
+          staticClass: "error",
+          domProps: { textContent: _vm._s(_vm.errors.get("title")) }
         })
       ]),
       _vm._v(" "),
@@ -13235,6 +13258,11 @@ var render = function() {
               _vm.$set(_vm.note, "note", $event.target.value)
             }
           }
+        }),
+        _vm._v(" "),
+        _c("span", {
+          staticClass: "error",
+          domProps: { textContent: _vm._s(_vm.errors.get("note")) }
         })
       ]),
       _vm._v(" "),
@@ -26102,7 +26130,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             showAdditionalNote: false,
-            comments: {}
+            comments: {},
+            timestamp: new timestamp()
         };
     },
     mounted: function mounted() {
@@ -26127,9 +26156,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         toggleShowAdditionalNote: function toggleShowAdditionalNote() {
             this.showAdditionalNote = !this.showAdditionalNote;
-        },
-        postedOn: function postedOn(timestamp) {
-            return moment(timestamp).subtract(timestamp, 'days').calendar();
         }
     }
 });
@@ -26194,7 +26220,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("span", { staticClass: "pull-right" }, [
-                _vm._v(_vm._s(_vm.postedOn(comment.created_at)))
+                _vm._v(_vm._s(_vm.timestamp.postedOn(comment.created_at)))
               ])
             ]),
             _vm._v(" "),
@@ -26284,13 +26310,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['note'],
 
     data: function data() {
         return {
-            comment: ''
+            comment: '',
+            errors: new errors()
         };
     },
 
@@ -26304,6 +26332,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 note_id: this.note.id
             }).then(function (response) {
                 _this.$emit('addComment');
+            }).catch(function (error) {
+                _this.errors.record(error.response.data);
             });
         },
         backToNote: function backToNote() {
@@ -26345,6 +26375,11 @@ var render = function() {
             _vm.comment = $event.target.value
           }
         }
+      }),
+      _vm._v(" "),
+      _c("span", {
+        staticClass: "error",
+        domProps: { textContent: _vm._s(_vm.errors.get("comment")) }
       })
     ]),
     _vm._v(" "),
@@ -42892,6 +42927,136 @@ exports.push([module.i, "\n#comments {\n  margin-top: 30px;\n}\n#comments .panel
 
 // exports
 
+
+/***/ }),
+/* 196 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Errors = function () {
+    /**
+     * Create a new Errors instance.
+     */
+    function Errors() {
+        _classCallCheck(this, Errors);
+
+        this.errors = {};
+    }
+
+    /**
+     * Determine if an errors exists for the given field.
+     *
+     * @param {string} field
+     */
+
+
+    _createClass(Errors, [{
+        key: "has",
+        value: function has(field) {
+            return this.errors.hasOwnProperty(field);
+        }
+
+        /**
+         * Retrieve the error message for a field.
+         *
+         * @param {string} field
+         */
+
+    }, {
+        key: "get",
+        value: function get(field) {
+            if (this.errors[field]) {
+                return this.errors[field][0];
+            }
+        }
+
+        /**
+         * Record the new errors.
+         *
+         * @param {object} errors
+         */
+
+    }, {
+        key: "record",
+        value: function record(errors) {
+            this.errors = errors;
+        }
+    }]);
+
+    return Errors;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Errors);
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(198);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(190)("7ee18ea8", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-96e9b992\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./CreateNote.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-96e9b992\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./CreateNote.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(46)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 199 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Timestamp = function () {
+    function Timestamp() {
+        _classCallCheck(this, Timestamp);
+    }
+
+    _createClass(Timestamp, [{
+        key: 'postedOn',
+        value: function postedOn(timestamp) {
+            return moment(timestamp).subtract(timestamp, 'days').calendar();
+        }
+    }]);
+
+    return Timestamp;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Timestamp);
 
 /***/ })
 /******/ ]);

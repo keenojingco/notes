@@ -15,7 +15,7 @@
                         <tr v-for="note in notes">
                             <td>{{ note.user.name }}</td>
                             <td><a href="#" @click.prevent="getNote(note)">{{ note.title }}</a></td>
-                            <td>{{ postedOn(note.created_at) }}</td>
+                            <td>{{ timestamp.postedOn(note.created_at) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -33,6 +33,7 @@
             return {
                 notes: [],
                 showCreateNote: false,
+                timestamp: new timestamp()
             }
         },
 
@@ -63,11 +64,6 @@
             // Emitter for when a note is selected for viewing
             getNote(note) {
                 this.$emit('shownote', note);
-            },
-
-            postedOn(timestamp)
-            {
-                return moment(timestamp).subtract(timestamp, 'days').calendar();
             }
         }
     }
