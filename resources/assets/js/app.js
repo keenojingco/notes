@@ -2,6 +2,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import Moment from 'moment';
+window.moment = Moment;
+
 Vue.component('note', require('./components/Note.vue'));
 Vue.component('notes', require('./components/Notes.vue'));
 Vue.component('create-note', require('./components/CreateNote.vue'));
@@ -13,7 +16,6 @@ const app = new Vue({
         showNote: false,
         showNotes: true,
         showCreateNote: false,
-        singleNote : {}
     },
     methods: {
         toggleShowNotes()
@@ -32,7 +34,7 @@ const app = new Vue({
 
         toggleShowNote(note)
         {
-            this.singleNote = note;
+            this.note = note;
             this.showNotes = false;
             this.showCreateNote = false;
             this.showNote = true;

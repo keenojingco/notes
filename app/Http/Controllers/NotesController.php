@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Notes;
+use App\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +19,7 @@ class NotesController extends Controller
      */
     public function index()
     {
-        return Notes::with('user')->orderBy('created_at','desc')->get();
+        return Note::with(['user'])->orderBy('created_at','desc')->get();
     }
 
     /**
@@ -45,7 +45,7 @@ class NotesController extends Controller
             'note'      => 'required',
         ]);
 
-        $note = Notes::create([
+        $note = Note::create([
             'title'     => request('title'),
             'note'      => request('note'),
             'user_id'   => Auth::user()->id
@@ -65,7 +65,7 @@ class NotesController extends Controller
      */
     public function show($note)
     {
-        return Notes::where('id', $note)->with('user')->orderBy('created_at','desc')->first();
+        return Note::where('id', $note)->with(['user','comments.user'])->orderBy('created_at','desc')->first();
     }
 
     /**

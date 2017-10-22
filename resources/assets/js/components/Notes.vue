@@ -14,8 +14,8 @@
                     <tbody>
                         <tr v-for="note in notes">
                             <td>{{ note.user.name }}</td>
-                            <td><a href="#" @click.prevent="getNote(note)">{{ note.title }}</a></td>
-                            <td>{{ note.created_at }}</td>
+                            <td><a href="#" @click.prevent="showNote(note)">{{ note.title }}</a></td>
+                            <td>{{ postedOn(note.created_at) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -31,7 +31,6 @@
             return {
                 notes: [],
                 showList: true,
-                showNote: false
             }
         },
 
@@ -46,16 +45,18 @@
                 });
             },
 
-            getNote(note)
-            {
-                axios.get('/note/' + note.id).then(response => {
-                    this.$emit('shownote', response.data);
-                });
+            showNote(note) {
+                this.$emit('shownote', note);
             },
 
             createNote()
             {
                 this.$emit('createnote');
+            },
+
+            postedOn(timestamp)
+            {
+                return moment().subtract(timestamp, 'days').calendar();
             }
         }
     }
