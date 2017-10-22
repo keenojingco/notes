@@ -13,31 +13,19 @@ Vue.component('additional-note', require('./components/AdditionalNote.vue'));
 const app = new Vue({
     el: '#app',
     data: {
-        showNote: false,
-        showNotes: true,
-        showCreateNote: false,
+        note: {}
     },
     methods: {
-        toggleShowNotes()
-        {
-            this.showNote = false;
-            this.showNotes = true;
-            this.showCreateNote = false;
-        },
-
-        toggleCreateNote()
-        {
-            this.showNotes = false;
-            this.showCreateNote = true;
-            this.showNote = false;
-        },
-
-        toggleShowNote(note)
+        // Show a note
+        showNote(note)
         {
             this.note = note;
-            this.showNotes = false;
-            this.showCreateNote = false;
-            this.showNote = true;
+        },
+
+        // Show all ntoes
+        showNotes()
+        {
+            this.note = {};
         }
     }
 });

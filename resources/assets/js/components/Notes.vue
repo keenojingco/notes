@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container">
+        <div class="container" v-if="!showCreateNote">
             <h2>Notes Overview</h2>
             <div class="table-responsive">
                 <table class="table">
@@ -14,14 +14,16 @@
                     <tbody>
                         <tr v-for="note in notes">
                             <td>{{ note.user.name }}</td>
-                            <td><a href="#" @click.prevent="showNote(note)">{{ note.title }}</a></td>
+                            <td><a href="#" @click.prevent="getNote(note)">{{ note.title }}</a></td>
                             <td>{{ postedOn(note.created_at) }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <button class="btn btn-success" @click="createNote">CREATE A NEW NOTE</button>
+            <button class="btn btn-success" @click="toggleShowCreateNote">CREATE A NEW NOTE</button>
         </div>
+
+        <create-note v-if="showCreateNote" @showNotes="toggleShowCreateNote" @noteCreated="noteCreated"></create-note>
     </div>
 </template>
 
@@ -30,7 +32,7 @@
         data() {
             return {
                 notes: [],
-                showList: true,
+                showCreateNote: false,
             }
         },
 
@@ -39,24 +41,33 @@
         },
 
         methods: {
+            // Get all notes
             getNotes() {
                 axios.get('/note').then(response => {
                     this.notes = response.data;
                 });
             },
 
-            showNote(note) {
-                this.$emit('shownote', note);
+            // Listener for when the note is created
+            noteCreated(){
+                this.getNotes();
+                this.toggleShowCreateNote();
             },
 
-            createNote()
+            // Toggle show and hide of Notes List and Create Note components
+            toggleShowCreateNote()
             {
-                this.$emit('createnote');
+                this.showCreateNote = !this.showCreateNote;
+            },
+
+            // Emitter for when a note is selected for viewing
+            getNote(note) {
+                this.$emit('shownote', note);
             },
 
             postedOn(timestamp)
             {
-                return moment().subtract(timestamp, 'days').calendar();
+                return moment(timestamp).subtract(timestamp, 'days').calendar();
             }
         }
     }

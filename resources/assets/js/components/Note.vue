@@ -7,11 +7,11 @@
             <button type="submit" class="btn btn-success pull-right" @click="toggleShowAdditionalNote">Add Additional Note ></button>
         </div>
 
-        <additional-note v-if="showAdditionalNote" :single-note="note" @addComment="addComment"></additional-note>
+        <additional-note v-if="showAdditionalNote" :note="note" @addComment="addComment" @showNote="toggleShowAdditionalNote"></additional-note>
 
-        <div class="container" v-for="comment in comments.comments">
-            <div class="panel panel-primary">
-                <div class="panel-heading" style="overflow:auto">
+        <div id="comments" class="container">
+            <div class="panel panel-primary" v-for="comment in comments.comments">
+                <div class="panel-heading">
                     <h3 class="panel-title pull-left">{{ comment.user.name }}</h3>
                     <span class="pull-right">{{ postedOn(comment.created_at) }}</span>
                 </div>
@@ -60,8 +60,18 @@
 
             postedOn(timestamp)
             {
-                return moment().subtract(timestamp, 'days').calendar();
+                return moment(timestamp).subtract(timestamp, 'days').calendar();
             }
         }
     }
 </script>
+
+<style lang="scss">
+    #comments {
+        margin-top:30px;
+
+        .panel-heading {
+            overflow: auto;
+        }
+    }
+</style>

@@ -35,13 +35,13 @@
                 }).then(response => {
                     this.note.title = '';
                     this.note.note = '';
-                    this.backToNotes();
+                    this.$emit('noteCreated');
                 });
             },
 
             backToNotes()
             {
-                this.$emit('shownotes');
+                this.$emit('showNotes');
             }
         }
     }
