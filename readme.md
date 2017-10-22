@@ -1,9 +1,11 @@
 # Note App
 
-Built with Laravel 5.4 and Vue2
+Built with Laravel 5.4 and Vue 2
 
 1. run composer install
-2. run php artisan migrate --seed
+2. rename .env.example file to .env then run php artisan key:generate
+3. enter database information
+4. run php artisan migrate --seed
 
 Accounts
 1. user: enrique@app.com pw:secret
